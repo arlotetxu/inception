@@ -1,0 +1,4 @@
+services:
+  nginx:
+    build: ./nginx
+    restart: on-failure
