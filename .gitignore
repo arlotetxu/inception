@@ -1,6 +1,1 @@
-*
-!.git
-!.gitignore
-!Makefile
-!README.md
-!srcs/*
+.env
