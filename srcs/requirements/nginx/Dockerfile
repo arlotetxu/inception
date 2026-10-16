@@ -1,10 +1,12 @@
 FROM alpine:3.23
 
-RUN apk update && apk add nginx
-RUN apk add openssl curl ca-certificates
-RUN apk add vim
+RUN apk add --no-cache nginx openssl
 
-#COPY
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY html/ /var/www/html/
+
+EXPOSE 80
 
 ENTRYPOINT ["nginx"]
+# CMD ["-V"]
 CMD ["-g", "daemon off;"]

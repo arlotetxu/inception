@@ -3,4 +3,4 @@
 !.gitignore
 !Makefile
 !README.md
-!srcs/
+!srcs/*

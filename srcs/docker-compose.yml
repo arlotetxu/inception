@@ -1,4 +1,6 @@
 services:
   nginx:
-    build: ./nginx
+    build: ./requirements/nginx
+    ports: 
+      - "0.0.0.0:8080:80"
     restart: on-failure
