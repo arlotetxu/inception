@@ -51,4 +51,16 @@ MAGENTA     = \033[0;95m
 CYAN        = \033[0;96m
 WHITE       = \033[0;97m
 
+DOMAIN = joflorid.42.fr
 
+all: hosts
+	docker compose -f srcs/docker-compose.yml up -d --build
+
+hosts:
+	@grep -q "$(DOMAIN)" /etc/hosts || \
+		echo "127.0.0.1 $(DOMAIN)" | sudo tee -a /etc/hosts
+
+down:
+	docker compose -f srcs/docker-compose.yml down
+
+.PHONY: all hosts down

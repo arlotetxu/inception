@@ -1,3 +1,4 @@
+user nginx;
 worker_processes auto;
 pid /run/nginx/nginx.pid;
 error_log /dev/stderr warn;
@@ -11,8 +12,12 @@ http {
     access_log /dev/stdout;
 
     server {
-        listen 80;
-        server_name localhost;
+        listen 443 ssl;
+        server_name __DOMAIN_NAME__;
+
+		ssl_protocols TLSv1.2 TLSv1.3;
+		ssl_certificate 	/etc/nginx/ssl/server.crt;
+		ssl_certificate_key	/etc/nginx/ssl/server.key;	
 
         root /var/www/html;
         index index.html;

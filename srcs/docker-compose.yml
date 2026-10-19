@@ -1,6 +1,20 @@
 services:
   nginx:
     build: ./requirements/nginx
+    image: nginx:1.0
+    container_name: nginx
     ports: 
-      - "0.0.0.0:8080:80"
-    restart: on-failure
+      - "443:443"
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+#    network:
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate -q --spider https://localhost:443/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+ 
