@@ -2,6 +2,8 @@ services:
   nginx:
     build: ./requirements/nginx
     image: nginx:1.0
+    networks:
+      - inception
     container_name: nginx
     ports: 
       - "443:443"
@@ -10,11 +12,29 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-#    network:
 
     healthcheck:
       test: ["CMD-SHELL", "wget --no-check-certificate -q --spider https://localhost:443/ || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3
- 
+
+  mariadb:
+    build: ./requirements/mariadb
+    image: mariadb:1.0
+    networks:
+      - inception
+    container_name: mariadb
+    ports:
+      -"3306:3306"
+    restart: unless-stopped
+#    environment:
+
+
+
+
+networks:
+  inception:
+    name: inception
+    driver: bridge
+    
