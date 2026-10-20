@@ -53,8 +53,12 @@ WHITE       = \033[0;97m
 
 DOMAIN = joflorid.42.fr
 
-all: hosts
+all: hosts dirs
 	docker compose -f srcs/docker-compose.yml up -d --build
+
+dirs:
+	mkdir -p /home/joflorid/data/mariadb
+	mkdir -p /home/joflorid/data/wordpress
 
 hosts:
 	@grep -q "$(DOMAIN)" /etc/hosts || \
@@ -63,4 +67,8 @@ hosts:
 down:
 	docker compose -f srcs/docker-compose.yml down
 
-.PHONY: all hosts down
+clean:
+	rm -rf /home/joflorid/data/mariadb
+	rm -rf /home/joflorid/data/wordpress
+
+.PHONY: all hosts down clean
