@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/sh
 
 set -e
 
@@ -16,7 +16,7 @@ if [ ! -d "$DATADIR/mysql" ]; then
 	mariadb-install-db --user=mysql --datadir="$DATADIR" --skip-test-db > /dev/null
 
 	#temp server. No network (--skip-networking)
-	mariadb --user=mysql --skip-networking --socket="$SOCKET" & 
+	mariadbd --user=mysql --skip-networking --socket="$SOCKET" & 
 	TEMP_PID=$!
 
 	until mariadb-admin --socket="$SOCKET" ping --silent; do
