@@ -32,8 +32,6 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception
-#    ports:
-#      - "3306:3306"
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

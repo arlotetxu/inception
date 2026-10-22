@@ -68,7 +68,7 @@ down:
 	docker compose -f srcs/docker-compose.yml down
 
 clean:
-	rm -rf /home/joflorid/data/mariadb
-	rm -rf /home/joflorid/data/wordpress
+	sudo rm -rf /home/joflorid/data/mariadb
+	sudo rm -rf /home/joflorid/data/wordpress
 
 .PHONY: all hosts down clean
