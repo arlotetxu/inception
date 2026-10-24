@@ -16,19 +16,22 @@ case "$(echo "$WP_ADMIN_USER" | tr '[:upper:]' '[:lower:]')" in *admin*)
 esac
 
 # Wait for mariadb
-until mariadb-admin ping -h mariadb -u"$MYSQL_USER" -p"$DB_PASSWORD" --skip-ssl --silent; do
+until mariadb-admin ping -h mariadb -P 3307 -u"$MYSQL_USER" -p"$DB_PASSWORD" --skip-ssl --silent; do
 	echo "Waiting to MariaDB..."
 	sleep 2
 done
 
 # Download and configure WP
-if [ ! -f "$WP_PATH/wp-config.php" ]; then
+if [ ! -f "$WP_PATH/wp-load.php" ]; then
 	wp core download --path="$WP_PATH" --allow-root
+fi
+
+if [ ! -f "$WP_PATH/wp-config.php" ]; then
 	wp config create --path="$WP_PATH" --allow-root \
 		--dbname="$MYSQL_DATABASE" \
 		--dbuser="$MYSQL_USER" \
 		--dbpass="$DB_PASSWORD" \
-		--dbhost=mariadb
+		--dbhost=mariadb:3307
 fi
 
 # Install the site and create the users
@@ -46,6 +49,7 @@ if ! wp core is-installed --path="$WP_PATH" --allow-root; then
 		--user_pass="$WP_USER_PASSWORD"
 fi
 
+# wp config set DB_HOST "mariadb:3307" --path="$WP_PATH" --allow-root
 chown -R nobody:nobody "$WP_PATH"
 
 exec "$@"
