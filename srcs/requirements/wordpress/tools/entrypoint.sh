@@ -49,7 +49,9 @@ if ! wp core is-installed --path="$WP_PATH" --allow-root; then
 		--user_pass="$WP_USER_PASSWORD"
 fi
 
-# wp config set DB_HOST "mariadb:3307" --path="$WP_PATH" --allow-root
+# To update de domain in case there is a change after DB creation
+wp option update home "https://$DOMAIN_NAME" --path="$WP_PATH" --allow-root
+wp option update siteurl "https://$DOMAIN_NAME" --path="$WP_PATH" --allow-root
 chown -R nobody:nobody "$WP_PATH"
 
 exec "$@"
