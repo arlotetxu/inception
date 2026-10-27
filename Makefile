@@ -57,8 +57,7 @@ all: hosts dirs
 	docker compose -f srcs/docker-compose.yml up -d --build
 
 dirs:
-	mkdir -p /home/joflorid/data/mariadb
-	mkdir -p /home/joflorid/data/wordpress
+	sudo mkdir -p /home/joflorid/data/mariadb /home/joflorid/data/wordpress
 
 hosts:
 	@grep -q "$(DOMAIN)" /etc/hosts || \
@@ -68,7 +67,12 @@ down:
 	docker compose -f srcs/docker-compose.yml down
 
 clean:
-	sudo rm -rf /home/joflorid/data/mariadb
-	sudo rm -rf /home/joflorid/data/wordpress
+	sudo rm -rf /home/joflorid/data/mariadb /home/joflorid/data/wordpress
 
+status:
+	docker compose -f srcs/docker-compose.yml ps -a
+
+logs:
+	@read -p "Enter service: " _SERVICE_;\
+	docker compose -f srcs/docker-compose.yml logs "$$_SERVICE_"
 .PHONY: all hosts down clean

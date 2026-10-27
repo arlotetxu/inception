@@ -2,7 +2,7 @@ FROM alpine:3.23
 
 RUN apk add --no-cache php85 php85-fpm php85-phar php85-mysqli php85-openssl \
 	php85-curl php85-mbstring php85-zlib php85-ctype php85-dom php85-xml \
-	mariadb-client curl && \
+	php85-tokenizer php85-pecl-redis mariadb-client curl && \
 	echo "memory_limit = 512M" > /etc/php85/conf.d/99-wordpress.ini && \
 	# To run properly WP-CLI
 	ln -sf /usr/bin/php85 /usr/bin/php && \

@@ -34,6 +34,13 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
 		--dbhost=mariadb:3307
 fi
 
+# Redis settings (adding entries to wp-config.php)
+wp config set WP_REDIS_HOST redis --path="$WP_PATH" --allow-root
+wp config set WP_REDIS_PORT 6379 --raw --path="$WP_PATH" --allow-root
+#echo "define('WP_REDIS_HOST', 'redis')" >> "$WP_PATH/wp-config.php"
+#echo "define('WP_REDIS_PORT', 6379)" >> "$WP_PATH/wp-config.php"
+
+
 # Install the site and create the users
 if ! wp core is-installed --path="$WP_PATH" --allow-root; then
 	wp core install --path="$WP_PATH" --allow-root \
@@ -47,7 +54,14 @@ if ! wp core is-installed --path="$WP_PATH" --allow-root; then
 	wp user create "$WP_USER" "$WP_USER_EMAIL" --path="$WP_PATH" --allow-root \
 		--role=author \
 		--user_pass="$WP_USER_PASSWORD"
+
 fi
+
+# Install redis-cache plugin if not installed
+if ! wp plugin is-installed redis-cache --path="$WP_PATH" --allow-root; then
+	wp plugin install redis-cache --activate --path="$WP_PATH" --allow-root
+fi
+wp redis enable --path="$WP_PATH" --allow-root || echo "WARNING: redis couldn't be activated"
 
 # To update de domain in case there is a change after DB creation
 wp option update home "https://$DOMAIN_NAME" --path="$WP_PATH" --allow-root
