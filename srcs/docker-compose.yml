@@ -67,6 +67,7 @@ services:
       - db_password
       - wp_admin_password
       - wp_user_password
+      - redis_password
     volumes:
       - wordpress_data:/var/www/html
     networks:
@@ -81,6 +82,11 @@ services:
     container_name: redis
     networks:
       - inception
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    secrets:
+      - redis_password
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -100,6 +106,8 @@ secrets:
     file: ../secrets/wp_admin_password.txt
   wp_user_password:
     file: ../secrets/wp_user_password.txt
+  redis_password:
+    file: ../secrets/redis_password.txt
 
 volumes:
   mariadb_data:

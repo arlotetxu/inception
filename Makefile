@@ -61,7 +61,7 @@ dirs:
 
 hosts:
 	@grep -q "$(DOMAIN)" /etc/hosts || \
-		echo "127.0.0.1 $(DOMAIN)" | sudo tee -a /etc/hosts
+		echo "0.0.0.0 $(DOMAIN)" | sudo tee -a /etc/hosts
 
 down:
 	docker compose -f srcs/docker-compose.yml down

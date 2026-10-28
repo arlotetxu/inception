@@ -7,6 +7,7 @@ WP_PATH=/var/www/html
 DB_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
+REDIS_PASSWORD=$(cat /run/secrets/redis_password)
 
 # Check if admin is in username
 case "$(echo "$WP_ADMIN_USER" | tr '[:upper:]' '[:lower:]')" in *admin*)
@@ -37,6 +38,7 @@ fi
 # Redis settings (adding entries to wp-config.php)
 wp config set WP_REDIS_HOST redis --path="$WP_PATH" --allow-root
 wp config set WP_REDIS_PORT 6379 --raw --path="$WP_PATH" --allow-root
+wp config set WP_REDIS_PASSWORD "$REDIS_PASSWORD" --path="$WP_PATH" --allow-root
 #echo "define('WP_REDIS_HOST', 'redis')" >> "$WP_PATH/wp-config.php"
 #echo "define('WP_REDIS_PORT', 6379)" >> "$WP_PATH/wp-config.php"
 
