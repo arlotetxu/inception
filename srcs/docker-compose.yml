@@ -96,6 +96,23 @@ services:
       timeout: 5s
       retries: 5
 
+  vsftpd:
+    build: ./requirements/vsftpd
+    image: vsftpd:1.0
+    container_name: vsftpd
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    environment:
+      - FTP_USER=${FTP_USER}
+    secrets:
+      - ftp_user_password
+    volumes:
+      - wordpress_data:/home/${FTP_USER}/ftp
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
 
 secrets:
   db_password:
@@ -108,6 +125,8 @@ secrets:
     file: ../secrets/wp_user_password.txt
   redis_password:
     file: ../secrets/redis_password.txt
+  ftp_user_password:
+    file: ../secrets/ftp_user_password.txt
 
 volumes:
   mariadb_data:
